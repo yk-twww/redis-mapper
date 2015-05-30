@@ -49,6 +49,14 @@ class Redis
             6379
           end
 
+          def exists?(redis_key)
+            @redis.exists(redis_key.to_s)
+          end
+
+          def delete(redis_key)
+            @redis.del(redis_key.to_s) == 1
+          end
+
           private :create_from_val, :redis_default_port, :new
         end
       end
