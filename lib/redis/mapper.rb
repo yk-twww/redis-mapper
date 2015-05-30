@@ -60,6 +60,12 @@ class Redis
           private :create_from_val, :redis_default_port, :new
         end
       end
+
+      [:each, :keys, :length, :size, :merge!, :update, :values].each do |name|
+        define_method(name) do |*args, &block|
+          @h.send(name, *args, &block)
+        end
+      end
     end
 
     def initialize(redis_key, h = {})
