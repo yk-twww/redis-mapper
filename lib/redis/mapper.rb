@@ -60,24 +60,24 @@ class Redis
           private :create_from_val, :redis_default_port, :new
         end
       end
+    end
 
-      def initialize(redis_key, h = {})
-        @redis_key = redis_key
-        @h = h
-      end
+    def initialize(redis_key, h = {})
+      @redis_key = redis_key
+      @h = h
+    end
 
-      def get(k)
-        @h[k]
-      end
+    def get(k)
+      @h[k]
+    end
 
-      def set(k, v)
-        @h[k] = v
-      end
+    def set(k, v)
+      @h[k] = v
+    end
 
-      def save
-        packed = @h.to_msgpack
-        self.class.redis.set(@redis_key.to_s, packed)
-      end
+    def save
+      packed = @h.to_msgpack
+      self.class.redis.set(@redis_key.to_s, packed)
     end
   end
 end
