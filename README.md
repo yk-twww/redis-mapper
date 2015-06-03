@@ -1,8 +1,6 @@
 # Redis::Mapper
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/redis/mapper`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Use Redis as multi-column database for structured data
 
 ## Installation
 
@@ -22,7 +20,61 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Create class
+
+```ruby
+class User
+  include Redis::Mapper
+
+  @host = "127.0.0.1"
+  @port = 6379
+  @db = 1
+end
+```
+
+### Establish connection
+
+You must run redis-server on the host before bellow statement.
+
+```ruby
+User.establish_connection
+```
+
+### Create object
+
+There are three kind of methods used for creating an object.
+
+```ruby
+matz = User.create!("matz")         # create new object
+matz = User.find("matz")            # create the object from redis
+matz = User.find_or_create("matz")  # create the object from redis if exists,
+                                    # else create new object
+```
+
+### Set value
+
+```ruby
+matz.set("age", 50)
+matz.set("name", "Yukihiro Matsumoto")
+matz.set("birthday", {"year" => 1965, "month" => 4, "day" => 14})
+matz.set("languages", ["Japanese", "English", "Ruby"])
+```
+
+### Get value
+
+```ruby
+matz.get("age")       #=> 50
+matz.get("name")      #=> "Yukihiro Matsumoto"
+matz.get("birthday")  #=> {"year" => 1965, "month" => 4, "day" => 14}
+matz.get("languages") #=> ["Japanese", "English", "Ruby"]
+```
+
+### Save object
+
+```ruby
+matz.save # save to memory
+User.dump # save to disk
+```
 
 ## Development
 
